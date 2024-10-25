@@ -1,0 +1,8 @@
+node_modules
+game/*.js
+game/*.map
+dist/
+binary-dist/
+.parcel-cache
+
+out/
