@@ -1,4 +1,4 @@
-import { Engine, Actor, Color } from 'excalibur';
+import { Engine, Actor, Color, CollisionType } from 'excalibur';
 
 function newGame() : Engine {
   const game = new Engine({
@@ -11,21 +11,19 @@ function newGame() : Engine {
   return game
 }
 
-function newPaddle(x : number, y : number , width : number, height : number, color : Color) : Actor {
-  const paddle = new Actor({
-    x: x,
-    y: y,
-    width: width,
-    height: height,
-    color: color,
-  })
-
-  return paddle
+class Paddle extends Actor {
+  constructor(x : number, y : number , width : number, height : number, color : Color) {
+    super({
+      x: x, y: y,
+      width: width, height: height,
+      color: color,
+      collisionType: CollisionType.Fixed })
+  }
 }
 
 function main() {
   const game = newGame()
-  game.add(newPaddle(150, game.drawHeight-40, 200, 20, Color.Chartreuse))
+  game.add(new Paddle(150, game.drawHeight-40, 200, 20, Color.Chartreuse))
 
   game.start()
 }
