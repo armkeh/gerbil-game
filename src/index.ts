@@ -1,4 +1,5 @@
 import * as ex from 'excalibur';
+import * as logger from "./utils/logger";
 
 function newGame(): ex.Engine {
   const game = new ex.Engine({
@@ -97,11 +98,6 @@ class Ball extends ex.Actor {
   public onCollisionEnd(self: ex.Collider, other: ex.Collider, side: ex.Side, lastContact: ex.CollisionContact): void {
     this.colliding = false
 
-    // TODO: More dynamic effects after collisions, probably by emitting an event
-    //       to be handled by the other actor.
-    this.vel.x += 1
-    this.vel.y += 1
-
     super.onCollisionEnd(self, other, side, lastContact)
   }
 }
@@ -109,24 +105,13 @@ class Ball extends ex.Actor {
 function main() {
   const game = newGame()
 
-  // Set up logging on screen
-  const logger = ex.Logger.getInstance();
-  const screenAppender = new ex.ScreenAppender({
-    engine: game,
-    color: ex.Color.Black,
-    xPos: 0
-  });
-  logger.addAppender(screenAppender);
-
-  logger.info("Adding entities to game")
-
   game.add(new Paddle(150, game.drawHeight-40, 200, 20, ex.Color.Chartreuse))
+
+  logger.appendLogsToScreen(game)
 
   const ball = new Ball(100, 300, 10, ex.Color.Red)
   game.add(ball)
   ball.serve(ex.vec(100,100), 1000)
-
-  logger.info("Starting game")
 
   game.start()
 }
