@@ -21,6 +21,10 @@ class Paddle extends ex.Actor {
       collisionType: ex.CollisionType.Fixed })
   }
 
+  public hitBall(b: Ball) {
+    logger.info("Paddle connected with ball")
+  }
+
   public update(engine: ex.Engine, delta: number): void {
     if (
       engine.input.keyboard.isHeld(ex.Keys.A) ||
@@ -97,6 +101,11 @@ class Ball extends ex.Actor {
 
   public onCollisionEnd(self: ex.Collider, other: ex.Collider, side: ex.Side, lastContact: ex.CollisionContact): void {
     this.colliding = false
+
+    if (other.owner instanceof Paddle) {
+      let paddle = other.owner as Paddle
+      paddle.hitBall(this)
+    }
 
     super.onCollisionEnd(self, other, side, lastContact)
   }
