@@ -12,7 +12,17 @@ function newGame(): ex.Engine {
   return game
 }
 
-class Paddle extends ex.Actor {
+interface Bouncer {
+  /** `bounce` is called by a `Ball` when it collides with a `Bouncer` */
+  bounce(b: Ball): void;
+}
+
+/** Type guard for Bouncer objects */
+function isBouncer(object: any): object is Bouncer {
+  return 'bounce' in object;
+}
+
+class Paddle extends ex.Actor implements Bouncer {
   constructor(x : number, y : number , width : number, height : number, color : ex.Color) {
     super({
       x: x, y: y,
@@ -21,8 +31,8 @@ class Paddle extends ex.Actor {
       collisionType: ex.CollisionType.Fixed })
   }
 
-  public hitBall(b: Ball) {
-    logger.info("Paddle connected with ball")
+  public bounce(_b: Ball) {
+    logger.info("A paddle has bounced a ball")
   }
 
   public update(engine: ex.Engine, delta: number): void {
@@ -102,9 +112,8 @@ class Ball extends ex.Actor {
   public onCollisionEnd(self: ex.Collider, other: ex.Collider, side: ex.Side, lastContact: ex.CollisionContact): void {
     this.colliding = false
 
-    if (other.owner instanceof Paddle) {
-      let paddle = other.owner as Paddle
-      paddle.hitBall(this)
+    if (isBouncer(other.owner)) {
+      other.owner.bounce(this)
     }
 
     super.onCollisionEnd(self, other, side, lastContact)
