@@ -10,3 +10,43 @@ export function appendLogsToScreen(game: Engine) {
   });
   logger.addAppender(screenAppender);
 }
+
+export function debug(...args: any[]) {
+  Logger.getInstance().debug(args)
+}
+
+export function info(...args: any[]) {
+  Logger.getInstance().info(args)
+}
+
+export function warn(...args: any[]) {
+  Logger.getInstance().warn(args)
+}
+
+export function error(...args: any[]) {
+  Logger.getInstance().error(args)
+}
+
+export function fatal(...args: any[]) {
+  Logger.getInstance().fatal(args)
+}
+
+export function debugOnce(...args: any[]) {
+  Logger.getInstance().debugOnce(args)
+}
+
+export function infoOnce(...args: any[]) {
+  Logger.getInstance().infoOnce(args)
+}
+
+export function warnOnce(...args: any[]) {
+  Logger.getInstance().warnOnce(args)
+}
+
+export function errorOnce(...args: any[]) {
+  Logger.getInstance().errorOnce(args)
+}
+
+export function fatalOnce(...args: any[]) {
+  Logger.getInstance().fatalOnce(args)
+}
